@@ -15,8 +15,7 @@ namespace App1
             //List<ulong> block64e = new List<ulong> { };
 
 
-            //если текст не кратен 64 битам
-            
+            //если текст не кратен 64 битам            
             if (text_mass.Length % 8 != 0)
             {
                 byte[] temp = new byte[text_mass.Length + (8 - text_mass.Length%8)];
@@ -25,22 +24,22 @@ namespace App1
             }
 
             byte[] mass = new byte[8];
-            List<long> feistel= new List<long>{};
+            List<ulong> feistel= new List<ulong>{};
 
             //делим на блоки и шифруем поблочно
             for (int i = 0; i < text_mass.Length / 8; i+=8)
             {
                 Array.Copy(text_mass, i, mass, 0 ,8);
-                for (int r = 0; r < n-1; r++)
+                for (int r = 0; r < n; r++)
                 {
-                    Round(mass,Key.Key_Gen(key_mass, r), 0);
+                    mass = Round(mass,Key.Key_Gen(key_mass, r), r);
                 }
-                feistel.Add(BitConverter.ToInt64(Round(mass, Key.Key_Gen(key_mass, n-1), 1),0));
+                feistel.Add(BitConverter.ToUInt64(mass, 0));
             }
 
             Console.WriteLine("Зашифрованное сообщение");
 
-            foreach (long aFeistel in feistel)
+            foreach (ulong aFeistel in feistel)
             {
                 Console.Write(Encoding.Default.GetString(BitConverter.GetBytes(aFeistel)));
             }
@@ -48,39 +47,37 @@ namespace App1
             Console.WriteLine();
 
 
-            List<long> feistel_en = new List<long> { };
+            List<ulong> feistel_en = new List<ulong> { };
 
-            foreach (long aFeistel in feistel)
+            foreach (ulong aFeistel in feistel)
             {
-                for (int r = 0; r < n - 1; r++)
+                for (int r = 0; r < n ; r++)
                 {
-                    Round(mass, Key.Key_Gen(key_mass, n-r-1), 0);
+                    mass = Round(mass, Key.Key_Gen(key_mass, n-r-1), r);
                 }
-                feistel_en.Add(BitConverter.ToInt64(Round(mass, Key.Key_Gen(key_mass, 0), 1), 0));
+                feistel_en.Add(BitConverter.ToUInt64(mass,0));
             }
 
             Console.WriteLine("Расшифрованное сообщение");
 
-            foreach (long aFeistel in feistel_en)
+            foreach (ulong aFeistel in feistel_en)
             {
                 Console.Write(Encoding.Default.GetString(BitConverter.GetBytes(aFeistel)));
             }
+            
             Console.WriteLine();
                 /*
                 ulong tmp = 0;
                 for (int l = 0; l < text_mass.Length; l++)
-                {
-                
+                {                
                     if ((Convert.ToUInt64(tmp) < sizeof(ulong))&&(tmp!=0))
                     {
-                        tmp = tmp + text_mass[l];
-                    
+                        tmp = tmp + text_mass[l];                    
                     }
                     else
                     {
                         block64.Add(Convert.ToUInt64(tmp));
                         tmp = 0;
-
                     }
                 }
                 
@@ -92,7 +89,6 @@ namespace App1
                         buf = Round(buf, round_key[i], 0);
                     }
                     block64e.Add(Round(buf, round_key[n - 1], 1));
-
                 }
 
             foreach (ulong aBlock64e in block64e)
@@ -100,11 +96,9 @@ namespace App1
                 Console.Write(aBlock64e);
 
             }*/
-            Console.WriteLine();
-
         }
 
-        public static byte[] Round(byte[] block, byte[] key, int n)
+        public static byte[] Round(byte[] block, byte[] key, int r)
         {
             byte[] block1 = new byte[2];
             byte[] block2 = new byte[2];
@@ -116,14 +110,14 @@ namespace App1
             Array.Copy(block, 4, block3, 0, 2);
             Array.Copy(block, 6, block4, 0, 2);
 
-            if (n == 0)
+            if (r != 9)
             {
                 Array.Copy(block1, 0, block, 6, 2);
                 Array.Copy(block2, 0, block, 4, 2);
-                Array.Copy(BitConverter.GetBytes(BitConverter.ToInt16(function(block1, block2),0) ^ 
-                    BitConverter.ToInt16(block3,0)), 0, block, 2, 2);
-                Array.Copy(BitConverter.GetBytes((BitConverter.ToInt16(function(block1, block2),0) ^ 
-                    BitConverter.ToInt16(block3,0)) ^ (BitConverter.ToInt16(block4,0) ^ BitConverter.ToInt16(key,0))), 
+                Array.Copy(BitConverter.GetBytes(BitConverter.ToUInt16(function(block1, block2),0) ^ 
+                    BitConverter.ToUInt16(block3,0)), 0, block, 2, 2);
+                Array.Copy(BitConverter.GetBytes((BitConverter.ToUInt16(function(block1, block2),0) ^ 
+                    BitConverter.ToUInt16(block3,0)) ^ (BitConverter.ToUInt16(block4,0) ^ BitConverter.ToUInt16(key,0))), 
                     0, block, 0, 2);
 
             }
@@ -131,10 +125,10 @@ namespace App1
             {
                 Array.Copy(block1, 0, block, 0, 2);
                 Array.Copy(block2, 0, block, 2, 2);
-                Array.Copy(BitConverter.GetBytes(BitConverter.ToInt16(function(block1, block2), 0) ^
-                    BitConverter.ToInt16(block3, 0)), 0, block, 4, 2);
-                Array.Copy(BitConverter.GetBytes((BitConverter.ToInt16(function(block1, block2), 0) ^
-                    BitConverter.ToInt16(block3, 0)) ^ (BitConverter.ToInt16(block4, 0) ^ BitConverter.ToInt16(key, 0))),
+                Array.Copy(BitConverter.GetBytes(BitConverter.ToUInt16(function(block1, block2), 0) ^
+                    BitConverter.ToUInt16(block3, 0)), 0, block, 4, 2);
+                Array.Copy(BitConverter.GetBytes((BitConverter.ToUInt16(function(block1, block2), 0) ^
+                    BitConverter.ToUInt16(block3, 0)) ^ (BitConverter.ToUInt16(block4, 0) ^ BitConverter.ToUInt16(key, 0))),
                     0, block, 6, 2);
             }
             return block;
@@ -165,13 +159,13 @@ namespace App1
 
         public static byte[] function(byte[] x, byte[] y)
         {
-            return BitConverter.GetBytes(BitConverter.ToInt16(x,0)^(~(Cycle_shift_right(BitConverter.ToInt16(y,0),9))));
+            return BitConverter.GetBytes(BitConverter.ToUInt16(y,0)^(~(Cycle_shift_right(BitConverter.ToUInt16(x,0),9))));
         }
 
 
-        public static short Cycle_shift_right(short k, short i)
+        public static ushort Cycle_shift_right(ushort k, ushort i)
         {
-            return (short)((k>>i)|(k<<(sizeof(short)*8 - i)));
+            return (ushort)((k>>i)|(k<<(sizeof(ushort)*8 - i)));
         }
     }
 }

@@ -12,21 +12,16 @@ namespace App1
         static void Main(string[] args)
         {
             Console.WriteLine("Введите открытый текст");
-            //ulong text = Convert.ToUInt64 (Console.ReadLine());
-            string text = Console.ReadLine();
+            string text = Console.ReadLine().ToUpper();
             Console.WriteLine("Введите ключ");
-            string key = Console.ReadLine();
-            //string key = "3456701234564567";
-            //ulong key = 3456701234564567;
-            //Console.WriteLine("Ключ:" + key);
-            //ulong key = 3456701234564567;
+            string key = Console.ReadLine().ToUpper();
             byte[] text_mass = Encoding.Default.GetBytes(text);
             byte[] key_mass = Encoding.Default.GetBytes(key);
-            
+            //Console.WriteLine(Encoding.Default.GetString(text_mass));
+            //Console.WriteLine(BitConverter.ToUInt64(key_mass,0));           
 
             int n = 10;
 
-            //Feistel_Cipher.Feistel(text, key, n);
             Feistel_Cipher.Feistel(text_mass, key_mass, n);
                         
             Console.ReadKey();
