@@ -27,9 +27,11 @@ namespace App1
             List<ulong> feistel= new List<ulong>{};
 
             //делим на блоки и шифруем поблочно
-            for (int i = 0; i < text_mass.Length / 8; i+=8)
+
+            for (int i = 0; i < text_mass.Length; i+=8)
             {
                 Array.Copy(text_mass, i, mass, 0 ,8);
+                                
                 for (int r = 0; r < n; r++)
                 {
                     mass = Round(mass,Key.Key_Gen(key_mass, r), r);
@@ -37,7 +39,7 @@ namespace App1
                 feistel.Add(BitConverter.ToUInt64(mass, 0));
             }
 
-            Console.WriteLine("Зашифрованное сообщение");
+            Console.Write("Зашифрованное сообщение: ");
 
             foreach (ulong aFeistel in feistel)
             {
@@ -48,7 +50,7 @@ namespace App1
 
 
             List<ulong> feistel_en = new List<ulong> { };
-
+            
             foreach (ulong aFeistel in feistel)
             {
                 for (int r = 0; r < n ; r++)
@@ -58,7 +60,7 @@ namespace App1
                 feistel_en.Add(BitConverter.ToUInt64(mass,0));
             }
 
-            Console.WriteLine("Расшифрованное сообщение");
+            Console.Write("Расшифрованное сообщение: ");
 
             foreach (ulong aFeistel in feistel_en)
             {
@@ -130,7 +132,7 @@ namespace App1
                 Array.Copy(BitConverter.GetBytes((BitConverter.ToUInt16(function(block1, block2), 0) ^
                     BitConverter.ToUInt16(block3, 0)) ^ (BitConverter.ToUInt16(block4, 0) ^ BitConverter.ToUInt16(key, 0))),
                     0, block, 6, 2);
-            }
+            }            
             return block;
             /*List<ushort> block16 = new List<ushort> { };
             for (int i = 0; i < sizeof(ulong); i=i+sizeof(ushort))
@@ -165,6 +167,7 @@ namespace App1
 
         public static ushort Cycle_shift_right(ushort k, ushort i)
         {
+            if (i > sizeof(ushort) * 8) i =(UInt16)(i % (sizeof(ushort) * 8));
             return (ushort)((k>>i)|(k<<(sizeof(ushort)*8 - i)));
         }
     }

@@ -36,6 +36,7 @@ namespace App1
 
         public static ulong Cycle_shift_left(ulong k, int i)
         {
+            if (i > sizeof(ulong) * 8) i = i % (sizeof(ulong) * 8);
             return (k<<i)|(k>>(sizeof(ulong)*8 - i));
         }
     }
