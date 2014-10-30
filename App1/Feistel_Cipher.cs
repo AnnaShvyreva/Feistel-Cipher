@@ -23,51 +23,114 @@ namespace App1
                 text_mass = temp;
             }
 
-            byte[] mass = new byte[8];
-            List<ulong> feistel= new List<ulong>{};
+            //Console.WriteLine("Открытый текст: " + BitConverter.ToUInt64(text_mass, 0));
+            Console.Write("Открытый текст: ");
+            foreach (byte t in text_mass)
+            {
+                Console.Write(t+ " ");
+            }
+            Console.WriteLine();
+
+            //byte[] mass = new byte[8];
+            List<byte[]> feistel= new List<byte[]>{};
 
             //делим на блоки и шифруем поблочно
 
             for (int i = 0; i < text_mass.Length; i+=8)
             {
+                byte[] mass = new byte[8];
                 Array.Copy(text_mass, i, mass, 0 ,8);
-                                
+
+                Console.Write("Блок номер "+i/8 + ": ");
+                foreach (byte t in mass)
+                {
+                    Console.Write(t + " ");
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("Начинаем шифровать");
                 for (int r = 0; r < n; r++)
                 {
                     mass = Round(mass, Key.ReturnRoundKey(r), r);
+
+                    Console.Write(r + ": ");
+                    foreach (byte t in mass)
+                    {
+                        Console.Write(t + " ");
+                    }
+                    Console.WriteLine();
                 }
-                feistel.Add(BitConverter.ToUInt64(mass, 0));
+                feistel.Add(mass);
             }
 
             Console.Write("Зашифрованное сообщение: ");
 
-            foreach (ulong aFeistel in feistel)
+            foreach (byte[] aFeistel in feistel)
             {
-                Console.Write(Encoding.Default.GetString(BitConverter.GetBytes(aFeistel)));
+                //Console.WriteLine(BitConverter.ToUInt16(BitConverter.GetBytes(aFeistel),0));
+                foreach (byte t in aFeistel)
+                {
+                    Console.Write(t + " ");
+                }
+                //Console.WriteLine();
             }
 
             Console.WriteLine();
 
 
-            List<ulong> feistel_en = new List<ulong> { };
+            List<byte[]> feistel_en = new List<byte[]> { };
+            int count = 0;
             
-            foreach (ulong aFeistel in feistel)
+            foreach (byte[] aFeistel in feistel)
             {
+                byte[] mass = new byte[8];
+                mass = aFeistel;
+                Console.Write("Блок номер " + count + ": ");
+                count++;
+                foreach (byte t in aFeistel)
+                {
+                    Console.Write(t + " ");
+                }
+                Console.WriteLine();
+
+                Console.WriteLine("Начинаем расшифровывать");
                 for (int r = 0; r < n ; r++)
                 {
                     mass = Round(mass, Key.ReturnRoundKey(n-r-1), r);
+
+                    Console.Write(r + ": ");
+                    foreach (byte t in mass)
+                    {
+                        Console.Write(t + " ");
+                    }
+                    Console.WriteLine();
                 }
-                feistel_en.Add(BitConverter.ToUInt64(mass,0));
+                feistel_en.Add(mass);
             }
 
             Console.Write("Расшифрованное сообщение: ");
 
-            foreach (ulong aFeistel in feistel_en)
+            foreach (byte[] aFeistel in feistel_en)
             {
-                Console.Write(Encoding.Default.GetString(BitConverter.GetBytes(aFeistel)));
+                //Console.Write(Encoding.Default.GetString(BitConverter.GetBytes(aFeistel)));
+                //Console.WriteLine(BitConverter.ToUInt16(BitConverter.GetBytes(aFeistel), 0));
+                foreach (byte t in aFeistel)
+                {
+                    Console.Write(t + " ");
+                }
+                //Console.WriteLine();
             }
             
             Console.WriteLine();
+
+            Console.Write("Расшифрованное сообщение: ");
+            foreach (byte[] aFeistel in feistel_en)
+            {
+                Console.Write(Encoding.Default.GetString(aFeistel));
+            }
+             
+            Console.WriteLine();
+
                 /*
                 ulong tmp = 0;
                 for (int l = 0; l < text_mass.Length; l++)
