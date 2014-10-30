@@ -8,7 +8,7 @@ namespace App1
 {
     class Feistel_Cipher
     {
-        public static void Feistel(byte[] text_mass, byte[] key_mass, int n)
+        public static void Feistel(byte[] text_mass, int n)
         {
             //List<ushort> round_key = Key.Key_Gen(key, n);
             //List<ulong> block64 = new List<ulong> { };
@@ -19,7 +19,7 @@ namespace App1
             if (text_mass.Length % 8 != 0)
             {
                 byte[] temp = new byte[text_mass.Length + (8 - text_mass.Length%8)];
-                Array.Copy(text_mass, temp, text_mass.Length);
+                Array.Copy(text_mass, 0, temp, temp.Length - text_mass.Length, text_mass.Length);
                 text_mass = temp;
             }
 
@@ -34,7 +34,7 @@ namespace App1
                                 
                 for (int r = 0; r < n; r++)
                 {
-                    mass = Round(mass,Key.Key_Gen(key_mass, r), r);
+                    mass = Round(mass, Key.ReturnRoundKey(r), r);
                 }
                 feistel.Add(BitConverter.ToUInt64(mass, 0));
             }
@@ -55,7 +55,7 @@ namespace App1
             {
                 for (int r = 0; r < n ; r++)
                 {
-                    mass = Round(mass, Key.Key_Gen(key_mass, n-r-1), r);
+                    mass = Round(mass, Key.ReturnRoundKey(n-r-1), r);
                 }
                 feistel_en.Add(BitConverter.ToUInt64(mass,0));
             }

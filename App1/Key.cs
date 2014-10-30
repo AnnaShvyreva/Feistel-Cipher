@@ -8,9 +8,10 @@ namespace App1
 {
     class Key
     {
-        public static byte[] Key_Gen(byte[] key_mass, int i) 
+        public static List<byte[]> round_key_mass = new List<byte[]> ();
+
+        public static void Key_Gen(byte[] key_mass, int n) 
         {
-            
             /*List<ushort> round_key = new List<ushort> { };         
 
             for (int i = 0; i < n; i++)
@@ -24,20 +25,33 @@ namespace App1
             }
             byte[] round_key = new byte[8];
             Array.Copy(key_mass, round_key, 8);*/
+            
+            if (key_mass.Length % 8 != 0)
+            {
+                byte[] temp = new byte[key_mass.Length + (8 - key_mass.Length % 8)];
+                Array.Copy(key_mass, 0, temp, temp.Length - key_mass.Length, key_mass.Length);
+                key_mass = temp;
+            }
 
-            ulong key =  BitConverter.ToUInt64(key_mass, 0);
-            key = Cycle_shift_left(key, i*12);
-            byte[] round_key = new byte[2];
-            Array.Copy(BitConverter.GetBytes(key), 0, round_key, 0, 2);
-            //Console.WriteLine(BitConverter.ToUInt16(round_key,0));
+            for (int i = 0; i < n; i++)
+            {
+                byte[] round_key = new byte[2];
+                Array.Copy(BitConverter.GetBytes(Cycle_shift_left(BitConverter.ToUInt64(key_mass, 0), i * 12)), 
+                    0, round_key, 0, 2);
+                round_key_mass.Add(round_key);
+            }
 
-            return round_key;
         }
 
         public static ulong Cycle_shift_left(ulong k, int i)
         {
             if (i > sizeof(ulong) * 8) i = i % (sizeof(ulong) * 8);
             return (k<<i)|(k>>(sizeof(ulong)*8 - i));
+        }
+
+        public static byte[] ReturnRoundKey(int i)
+        {
+            return round_key_mass[i];
         }
     }
 }
