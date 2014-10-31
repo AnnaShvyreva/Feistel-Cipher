@@ -11,21 +11,7 @@ namespace App1
         public static List<byte[]> round_key_mass = new List<byte[]> ();
 
         public static void Key_Gen(byte[] key_mass, int n) 
-        {
-            /*List<ushort> round_key = new List<ushort> { };         
-
-            for (int i = 0; i < n; i++)
-            {
-                round_key.Add(Convert.ToUInt16(Cycle_shift_left(key, i * 12)>>(sizeof(ulong)*8-16)));                
-            }            
-            
-            foreach(ulong aRound_key in round_key)
-            {
-                Console.WriteLine(aRound_key);                
-            }
-            byte[] round_key = new byte[8];
-            Array.Copy(key_mass, round_key, 8);*/
-            
+        {            
             if (key_mass.Length % 8 != 0)
             {
                 byte[] temp = new byte[key_mass.Length + (8 - key_mass.Length % 8)];
@@ -51,6 +37,12 @@ namespace App1
 
         public static byte[] ReturnRoundKey(int i)
         {
+            /*Console.Write("ключ: "); 
+            foreach (byte t in round_key_mass[i])
+            {
+                Console.Write(t + " ");
+            }
+            Console.WriteLine();*/
             return round_key_mass[i];
         }
     }

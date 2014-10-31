@@ -13,7 +13,6 @@ namespace App1
         {
             Console.WriteLine("Введите открытый текст");
             byte[] text_mass = Encoding.Default.GetBytes(Console.ReadLine());
-            //Console.WriteLine("Открытый текст: " + BitConverter.ToUInt64(text_mass, 0));
             Console.WriteLine("Введите ключ(не более 8 символов)");
             byte[] key_mass = Encoding.Default.GetBytes(Console.ReadLine());      
 
@@ -24,6 +23,7 @@ namespace App1
             
             Feistel_Cipher.Feistel(text_mass, n);
 
+            Console.ReadKey();
             Console.ReadKey();
         }
     }
