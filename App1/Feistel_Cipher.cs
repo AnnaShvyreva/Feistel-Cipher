@@ -27,11 +27,14 @@ namespace App1
 
             List<byte[]> feistel= new List<byte[]>{};
 
+            //byte[] iv = new byte[8] { 11, 11, 11, 11, 11, 11, 11, 11 }; // вектор инициализации - режим CBC
+
             //делим на блоки и шифруем поблочно
 
             for (int i = 0; i < text_mass.Length; i+=8)
             {
                 byte[] mass = new byte[8];
+                
                 Array.Copy(text_mass, i, mass, 0 ,8);
 
                 /*Console.Write("Блок номер "+i/8 + ": ");
@@ -42,6 +45,10 @@ namespace App1
                 Console.WriteLine();
 
                 Console.WriteLine("Начинаем шифровать");*/
+
+                //if (i != 0) mass = BitConverter.GetBytes(BitConverter.ToUInt64(mass, 0) ^ BitConverter.ToUInt64(feistel[i - 1], 0)); //режим CBC
+                //else mass = BitConverter.GetBytes(BitConverter.ToUInt64(mass, 0) ^ BitConverter.ToUInt64(iv, 0)); //режим CBC
+
                 for (int r = 0; r < n; r++)
                 {
                     mass = Round(mass, Key.ReturnRoundKey(r), r);
@@ -75,11 +82,11 @@ namespace App1
             
             List<byte[]> feistel_en = new List<byte[]> { };
             //int count = 0;
-            
-            foreach (byte[] aFeistel in feistel)
+
+            for (int i = 0; i < text_mass.Length; i += 8)
             {
                 byte[] mass = new byte[8];
-                mass = aFeistel;
+                mass = feistel[i];
                 /*Console.Write("Блок номер " + count + ": ");
                 count++;
                 foreach (byte t in aFeistel)
@@ -90,7 +97,7 @@ namespace App1
 
                 Console.WriteLine("Начинаем расшифровывать");*/
                 for (int r = 0; r < n ; r++)
-                {
+                {                                       
                     mass = RoundEn(mass, Key.ReturnRoundKey(n-r-1), r);
 
                     /*Console.Write(r + ": ");
@@ -100,6 +107,10 @@ namespace App1
                     }
                     Console.WriteLine();*/
                 }
+
+                //if (i != 0) mass = BitConverter.GetBytes(BitConverter.ToUInt64(mass, 0) ^ BitConverter.ToUInt64(feistel_en[i - 1], 0)); // режим CBC
+                //else mass = BitConverter.GetBytes(BitConverter.ToUInt64(mass, 0) ^ BitConverter.ToUInt64(iv, 0)); // режим CBC
+
                 feistel_en.Add(mass);
             }
 
@@ -131,8 +142,8 @@ namespace App1
             byte[] block1 = new byte[2];
             byte[] block2 = new byte[2];
             byte[] block3 = new byte[2];
-            byte[] block4 = new byte[2];
-
+            byte[] block4 = new byte[2];   
+                        
             Array.Copy(block, 0, block1, 0, 2);
             Array.Copy(block, 2, block2, 0, 2);
             Array.Copy(block, 4, block3, 0, 2);
