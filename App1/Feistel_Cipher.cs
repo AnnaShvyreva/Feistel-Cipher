@@ -139,6 +139,9 @@ namespace App1
 
         public static byte[] Round(byte[] block, byte[] key, int r) 
         {
+            byte[] block_ = new byte[8];
+            Array.Copy(block,0,block_,0,8);
+            
             byte[] block1 = new byte[2];
             byte[] block2 = new byte[2];
             byte[] block3 = new byte[2];
@@ -169,7 +172,10 @@ namespace App1
                 Array.Copy(BitConverter.GetBytes((BitConverter.ToUInt16(function(block1, block2), 0) ^
                     BitConverter.ToUInt16(block3, 0)) ^ (BitConverter.ToUInt16(block4, 0) ^ BitConverter.ToUInt16(key, 0))),
                     0, block, 6, 2);
-            }            
+            }
+
+            Hash.AddRoundKey(BitConverter.GetBytes(BitConverter.ToUInt16(block,0) ^ BitConverter.ToUInt16(block_,0)));
+
             return block;
 
         }
