@@ -51,7 +51,8 @@ namespace App1
 
                 for (int r = 0; r < n; r++)
                 {
-                    mass = Round(mass, Key.ReturnRoundKey(r), r);
+                    //mass = Round(mass, Key.ReturnRoundKey(r), r);
+                    mass = Round(mass, Hash.ReturnRoundKey(r), r);
 
                     /*Console.Write(r + ": ");
                     foreach (byte t in mass)
@@ -98,7 +99,8 @@ namespace App1
                 Console.WriteLine("Начинаем расшифровывать");*/
                 for (int r = 0; r < n ; r++)
                 {                                       
-                    mass = RoundEn(mass, Key.ReturnRoundKey(n-r-1), r);
+                    //mass = RoundEn(mass, Key.ReturnRoundKey(n-r-1), r);
+                    mass = RoundEn(mass, Hash.ReturnRoundKey(n - r - 1), r);
 
                     /*Console.Write(r + ": ");
                     foreach (byte t in mass)
@@ -174,7 +176,7 @@ namespace App1
                     0, block, 6, 2);
             }
 
-            Hash.AddRoundKey(BitConverter.GetBytes(BitConverter.ToUInt16(block,0) ^ BitConverter.ToUInt16(block_,0)));
+            Hash.AddRoundKey(BitConverter.GetBytes(BitConverter.ToUInt16(block,0) ^ BitConverter.ToUInt16(block_,0)), r+1);
 
             return block;
 
