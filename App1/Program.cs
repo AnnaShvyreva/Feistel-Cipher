@@ -26,6 +26,8 @@ namespace App1
             
             Feistel_Cipher.Feistel(text_mass, n);
 
+            Hash.H();
+
             Console.ReadKey();
             Console.ReadKey();
         }
