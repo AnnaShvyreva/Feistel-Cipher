@@ -9,4 +9,3 @@ D:\kmzi\App1\App1\obj\Debug\App1.exe
 D:\kmzi\App1\App1\obj\Debug\App1.pdb
 D:\kmzi\App1\App1\bin\Debug\App1.exe
 D:\kmzi\App1\App1\bin\Debug\App1.pdb
-D:\kmzi\App1\App1\obj\Debug\App1.csprojResolveAssemblyReference.cache

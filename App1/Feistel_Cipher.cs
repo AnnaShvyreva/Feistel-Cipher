@@ -30,6 +30,7 @@ namespace App1
             //byte[] iv = new byte[8] { 11, 11, 11, 11, 11, 11, 11, 11 }; // вектор инициализации - режим CBC
 
             //делим на блоки и шифруем поблочно
+            int count = -1;
 
             for (int i = 0; i < text_mass.Length; i+=8)
             {
@@ -51,9 +52,10 @@ namespace App1
 
                 for (int r = 0; r < n; r++)
                 {
+                    count++;
                     //mass = Round(mass, Key.ReturnRoundKey(r), r);
-                    mass = Round(mass, Hash.ReturnRoundKey(r), r);
-
+                    mass = Round(mass, Hash.ReturnRoundKey(count), r);
+                    
                     /*Console.Write(r + ": ");
                     foreach (byte t in mass)
                     {
@@ -87,7 +89,7 @@ namespace App1
             for (int i = 0; i < text_mass.Length; i += 8)
             {
                 byte[] mass = new byte[8];
-                mass = feistel[i];
+                mass = feistel[i/8];
                 /*Console.Write("Блок номер " + count + ": ");
                 count++;
                 foreach (byte t in aFeistel)
@@ -100,7 +102,7 @@ namespace App1
                 for (int r = 0; r < n ; r++)
                 {                                       
                     //mass = RoundEn(mass, Key.ReturnRoundKey(n-r-1), r);
-                    mass = RoundEn(mass, Hash.ReturnRoundKey(n - r - 1), r);
+                    mass = RoundEn(mass, Hash.ReturnRoundKey((i/8 + 1)*10 - 1 - r), r);
 
                     /*Console.Write(r + ": ");
                     foreach (byte t in mass)

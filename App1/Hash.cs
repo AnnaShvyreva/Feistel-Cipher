@@ -9,7 +9,7 @@ namespace App1
     class Hash //формирование ключей хеш-функцией
     {
         public static List<byte[]> round_key_mass = new List<byte[]>();
-
+        
         /*public static void HashGen(byte[] key_mass)
         {
             if (key_mass.Length % 8 != 0)
@@ -51,17 +51,10 @@ namespace App1
             }*/
 
             byte[] round_key = new byte[2];
-            Array.Copy(BitConverter.GetBytes(Cycle_shift_left(BitConverter.ToUInt64(key_mass, 0), n * 12)),
-                0, round_key, 0, 2);
+            Array.Copy(key_mass, 0, round_key, 0, 2);
             round_key_mass.Add(round_key);
 
 
-        }
-
-        public static ulong Cycle_shift_left(ulong k, int i)
-        {
-            if (i > sizeof(ulong) * 8) i = i % (sizeof(ulong) * 8);
-            return (k << i) | (k >> (sizeof(ulong) * 8 - i));
         }
 
     }
