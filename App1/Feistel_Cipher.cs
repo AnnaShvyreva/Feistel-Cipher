@@ -17,7 +17,7 @@ namespace App1
                 Array.Copy(text_mass, 0, temp, temp.Length - text_mass.Length, text_mass.Length);
                 text_mass = temp;
             }
-            
+                        
             /*Console.Write("Открытый текст: ");
             foreach (byte t in text_mass)
             {
@@ -129,6 +129,8 @@ namespace App1
             }
             
             Console.WriteLine();*/
+
+            Hash.hash_mass.Add(Hash.round_key_mass[Hash.round_key_mass.Count - 1]); //добавляет значение хеш функции
 
             Console.Write("Расшифрованное сообщение: ");
             foreach (byte[] aFeistel in feistel_en)

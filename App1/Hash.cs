@@ -9,6 +9,7 @@ namespace App1
     class Hash //формирование ключей хеш-функцией
     {
         public static List<byte[]> round_key_mass = new List<byte[]>();
+        public static List<byte[]> hash_mass = new List<byte[]>();
         
         public static byte[] ReturnRoundKey(int i)
         {
@@ -39,15 +40,25 @@ namespace App1
         {
             int[] mass = new int[10] {0,0,0,0,0,0,0,0,0,0};
             int j = -1;
-            foreach (byte[] a in round_key_mass)
+            foreach (byte[] a in hash_mass)
             {
                 j++;
-                mass[BitConverter.ToInt16(ReturnRoundKey(j), 0) % 10]++;
+                mass[BitConverter.ToInt16(ReturnHash(j), 0) % 10]++;
             }
 
             for (int i = 0; i < 10; i++)
                 Console.WriteLine(mass[i]);
 
+        }
+
+        public static void AddHash(byte[] key)
+        {
+            hash_mass.Add(key);
+        }
+
+        public static byte[] ReturnHash(int i)
+        {
+            return hash_mass[i];
         }
 
     }
