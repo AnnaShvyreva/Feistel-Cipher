@@ -66,9 +66,9 @@ namespace App1
                 feistel.Add(mass);
             }
 
-            Console.Write("Зашифрованное сообщение: ");
+            /*Console.Write("Зашифрованное сообщение: ");
 
-            /*foreach (byte[] aFeistel in feistel)
+            foreach (byte[] aFeistel in feistel)
             {
                 foreach (byte t in aFeistel)
                 {
@@ -76,12 +76,12 @@ namespace App1
                 }
             }*/
 
-            foreach (byte[] aFeistel in feistel)
+            /*foreach (byte[] aFeistel in feistel)
             {
                 Console.Write(Encoding.Default.GetString(aFeistel));
             }
 
-            Console.WriteLine();
+            Console.WriteLine();*/
             
             List<byte[]> feistel_en = new List<byte[]> { };
             //int count = 0;
@@ -130,15 +130,15 @@ namespace App1
             
             Console.WriteLine();*/
 
-            Hash.hash_mass.Add(Hash.round_key_mass[Hash.round_key_mass.Count - 1]); //добавляет значение хеш функции
-
+            Hash.hash_mass.Add(Hash.ReturnRoundKey(Hash.round_key_mass.Count - 1)); //добавляет значение хеш функции
+            /*
             Console.Write("Расшифрованное сообщение: ");
             foreach (byte[] aFeistel in feistel_en)
             {
                 Console.Write(Encoding.Default.GetString(aFeistel));
             }
              
-            Console.WriteLine();
+            Console.WriteLine();*/
         }
 
         //зашифровка

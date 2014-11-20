@@ -25,9 +25,9 @@ namespace App1
 
             StreamReader f = new StreamReader ("file.txt");
             string str = "1";
-            while (!(str = f.ReadLine()).Equals(""))
+            while (!(str = f.ReadLine()).Equals("0"))
             {
-                Console.WriteLine(str);
+                //Console.WriteLine(str);
                 byte[] text_mass = Encoding.Default.GetBytes(str);
                 //Hash.round_key_mass.Add(key_mass);
                 Hash.round_key_mass = new List<byte[]>();
