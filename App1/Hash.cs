@@ -23,12 +23,12 @@ namespace App1
 
         public static void Key_Gen(byte[] key_mass, int n)
         {
-            /*if (key_mass.Length % 8 != 0)
+            if (key_mass.Length % 2 != 0)
             {
-                byte[] temp = new byte[key_mass.Length + (8 - key_mass.Length % 8)];
+                byte[] temp = new byte[key_mass.Length + (2 - key_mass.Length % 2)];
                 Array.Copy(key_mass, 0, temp, temp.Length - key_mass.Length, key_mass.Length);
                 key_mass = temp;
-            }*/
+            }
 
             byte[] round_key = new byte[2];
             Array.Copy(key_mass, 0, round_key, 0, 2);
