@@ -130,7 +130,8 @@ namespace App1
             
             Console.WriteLine();*/
 
-            Hash.hash_mass.Add(Hash.ReturnRoundKey(Hash.round_key_mass.Count - 1)); //добавляет значение хеш функции
+            //Hash.hash_mass.Add(Hash.ReturnRoundKey(Hash.round_key_mass.Count - 1)); //добавляет значение хеш функции
+            Hash.AddHash(Hash.ReturnRoundKey(Hash.round_key_mass.Count - 2)); //добавляет значение хеш функции
             /*
             Console.Write("Расшифрованное сообщение: ");
             foreach (byte[] aFeistel in feistel_en)
